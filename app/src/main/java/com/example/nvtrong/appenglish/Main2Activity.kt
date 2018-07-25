@@ -12,32 +12,40 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
-import com.example.nvtrong.appenglish.tab.ViewPagerAdapter
-import kotlinx.android.synthetic.main.activity_main2.*
-import java.io.IOException
+import com.example.nvtrong.appenglish.listener.OnClickItemListenerFragment
+import com.example.nvtrong.appenglish.model.Song
 import com.example.nvtrong.appenglish.tab.OneFragment
 import com.example.nvtrong.appenglish.tab.TwoFragment
+import com.example.nvtrong.appenglish.tab.ViewPagerAdapter
+import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_main2.*
+import java.io.IOException
 
 
-class Main2Activity : AppCompatActivity() {
+class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
+
     lateinit var song: String
     lateinit var mediaPlayer: MediaPlayer
     lateinit var thread: Thread
     var isPlay = true
     lateinit var myUri: Uri
-    lateinit var arrayList: ArrayList<HashMap<String, String>>
+
+    lateinit var oneFragment: OneFragment
+    lateinit var twoFragment: TwoFragment
+
+    lateinit var realm: Realm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+        realm = MyApplication.realm
         mediaPlayer = MediaPlayer();
         init()
     }
 
     private fun init() {
         song = intent.getStringExtra(MainActivity.PUT_EXTRA_SONG)
-        Log.d("333333", song)
+        title = song.substring(song.lastIndexOf("/") + 1)
         myUri = Uri.parse("file://$song") // initialize Uri here
-        Log.d("URI:11111111111", myUri.toString())
 
         try {
             mediaPlayer.setDataSource(applicationContext, myUri)
@@ -83,6 +91,8 @@ class Main2Activity : AppCompatActivity() {
 
         btnSeek.setOnClickListener {
             seekTo(editText.text.toString().toInt())
+            oneFragment.addSession("${nameSession.text}", convertTime(editText.text.toString().toInt()), editText.text.toString())
+
         }
         btnNext.setOnClickListener {
             next5S()
@@ -115,6 +125,7 @@ class Main2Activity : AppCompatActivity() {
         editText.setText(0.toString())
 
         setupTab()
+        setSession()
 
     }
 
@@ -147,6 +158,12 @@ class Main2Activity : AppCompatActivity() {
         mediaPlayer.seekTo(int)
     }
 
+    private fun setSession() {
+        btnSet.setOnClickListener {
+            addSongToRealm(nameSession.text.toString(), editText.text.toString().toInt())
+        }
+    }
+
     fun convertTime(durationInMillis: Int): String {
         val millis = durationInMillis % 1000
         val second = durationInMillis / 1000 % 60
@@ -170,8 +187,38 @@ class Main2Activity : AppCompatActivity() {
 
     private fun setupViewPager(viewpager: ViewPager) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(OneFragment(), "ONE")
-        adapter.addFragment(TwoFragment(), "TWO")
+        oneFragment = OneFragment()
+        twoFragment = TwoFragment()
+        oneFragment.addListener(this)
+        adapter.addFragment(oneFragment, "ONE")
+        adapter.addFragment(twoFragment, "TWO")
         viewpager.setAdapter(adapter);
     }
+
+    private fun addSongToRealm(title: String, timeLog: Int) {
+        var resultsSong = realm.where(Song::class.java).contains(OneFragment.KEY_TITLE, title).findAll()
+        if (resultsSong.size > 0) {
+            Toast.makeText(this, "Failed, The title was be available!", Toast.LENGTH_SHORT).show()
+        } else {
+            realm.beginTransaction()
+            var song = realm.createObject(Song::class.java)
+
+            song.title = title
+            song.timeLong = timeLog
+            realm.commitTransaction()
+
+            var results = realm.where(Song::class.java).findAll()
+            results.forEach {
+                Log.d("333333333333333333", it.toString())
+            }
+            Toast.makeText(this, "Add Success!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun updateUI(title: String, time: String) {
+        nameSession.setText(title)
+        editText.setText(time)
+        seekTo(time.toInt())
+    }
+
 }
