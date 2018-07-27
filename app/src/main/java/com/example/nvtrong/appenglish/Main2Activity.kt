@@ -17,7 +17,9 @@ import com.example.nvtrong.appenglish.model.Song
 import com.example.nvtrong.appenglish.tab.OneFragment
 import com.example.nvtrong.appenglish.tab.TwoFragment
 import com.example.nvtrong.appenglish.tab.ViewPagerAdapter
+import com.example.nvtrong.appenglish.ultis.Ultis.KEY_TITLE
 import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main2.*
 import java.io.IOException
 
@@ -40,6 +42,8 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         realm = MyApplication.realm
         mediaPlayer = MediaPlayer();
         init()
+        onChangeRealm()
+
     }
 
     private fun init() {
@@ -161,6 +165,7 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     private fun setSession() {
         btnSet.setOnClickListener {
             addSongToRealm(nameSession.text.toString(), editText.text.toString().toInt())
+            twoFragment.notifyDataChanged()
         }
     }
 
@@ -190,13 +195,14 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         oneFragment = OneFragment()
         twoFragment = TwoFragment()
         oneFragment.addListener(this)
+        twoFragment.addListener(this)
         adapter.addFragment(oneFragment, "ONE")
         adapter.addFragment(twoFragment, "TWO")
         viewpager.setAdapter(adapter);
     }
 
     private fun addSongToRealm(title: String, timeLog: Int) {
-        var resultsSong = realm.where(Song::class.java).contains(OneFragment.KEY_TITLE, title).findAll()
+        var resultsSong = realm.where(Song::class.java).contains(KEY_TITLE, title).findAll()
         if (resultsSong.size > 0) {
             Toast.makeText(this, "Failed, The title was be available!", Toast.LENGTH_SHORT).show()
         } else {
@@ -221,4 +227,10 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         seekTo(time.toInt())
     }
 
+    fun onChangeRealm() {
+        var favourites = realm.where(Song::class.java).findAll()
+        favourites.addChangeListener { t, changeSet ->
+            twoFragment.notifyDataChanged()
+        }
+    }
 }

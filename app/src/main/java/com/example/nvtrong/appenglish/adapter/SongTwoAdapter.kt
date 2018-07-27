@@ -1,8 +1,10 @@
 package com.example.nvtrong.appenglish.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.support.annotation.LayoutRes
 import android.support.annotation.NonNull
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +19,7 @@ import com.example.nvtrong.appenglish.model.Song
 import com.example.nvtrong.appenglish.ultis.Ultis
 import io.realm.Realm
 
-class SongAdapter(@NonNull var context: Context?, @NonNull var list: List<out Map<String, *>>, @LayoutRes var resourceId: Int, var from: Array<String>, var to: IntArray) : BaseAdapter() {
+class SongTwoAdapter(@NonNull var context: Context?, @NonNull var list: List<out Map<String, *>>, @LayoutRes var resourceId: Int, var from: Array<String>, var to: IntArray) : BaseAdapter() {
     lateinit var listenerFragment: OnClickItemListenerFragment
     lateinit var realm: Realm
 
@@ -38,24 +40,22 @@ class SongAdapter(@NonNull var context: Context?, @NonNull var list: List<out Ma
             var textView = view.findViewById<TextView>(to[i])
             textView.text = value.toString()
         }
-        view.findViewById<View>(R.id.btnAdd).setOnClickListener {
-            var resultsSong = realm.where(Song::class.java).contains(Ultis.KEY_TITLE, map[Ultis.KEY_TITLE].toString()).findAll()
-            if (resultsSong.size > 0) {
-                Toast.makeText(context, "Failed, The title was be available!", Toast.LENGTH_SHORT).show()
-            } else {
-                realm.beginTransaction()
-                var song = realm.createObject(Song::class.java)
-
-                song.title = map[Ultis.KEY_TITLE].toString()
-                song.timeLong = map[Ultis.KEY_TIME_LONG].toString().toInt()
-                realm.commitTransaction()
-
-                var results = realm.where(Song::class.java).findAll()
-                results.forEach {
-                    Log.d("333333333333333333", it.toString())
+        view.findViewById<View>(R.id.btnDelete).setOnClickListener {
+            val alert_builder = AlertDialog.Builder(context as Activity)
+            alert_builder.setMessage("Do you want delete: ${map[Ultis.KEY_TITLE]}")
+            alert_builder.setTitle("Alert")
+            alert_builder.setPositiveButton("OK") { dialogInterface, i ->
+                var resultsSong = realm.where(Song::class.java).contains(Ultis.KEY_TITLE, map[Ultis.KEY_TITLE].toString()).findAll()
+                realm.executeTransaction {
+                    Log.d("Delete realm", resultsSong.deleteAllFromRealm().toString())
+                    Toast.makeText(context, "Deleted!", Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(context, "Add Success!", Toast.LENGTH_SHORT).show()
             }
+
+            alert_builder.setNeutralButton("Cancel", null)
+            val dialog = alert_builder.create()
+            dialog.show()
+
         }
         view.setOnClickListener {
             listenerFragment.updateUI(map.getValue(Ultis.KEY_TITLE).toString(), map.getValue(Ultis.KEY_TIME_LONG).toString())
