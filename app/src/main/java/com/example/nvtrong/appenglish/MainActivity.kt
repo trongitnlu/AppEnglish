@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        songsManager = SongsManager(this)
         if (Ultis.getDir(this).isEmpty()) {
             performFileSearch()
         } else {
@@ -42,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        songsManager = SongsManager(this, Ultis.getDir(this))
         listSong = songsManager.playList
         val from = arrayOf("songTitle", "songPath")
         val to = intArrayOf(R.id.title, R.id.shortcut)

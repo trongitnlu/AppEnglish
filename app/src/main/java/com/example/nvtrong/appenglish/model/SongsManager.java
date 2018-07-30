@@ -16,17 +16,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SongsManager {
-    final String MEDIA_PATH = Environment.getExternalStorageDirectory()
-            .getPath() + "/English/";
+    private String MEDIA_PATH = Environment.getExternalStorageDirectory()
+            .getPath();
     private ArrayList<HashMap<String, String>> songsList = new ArrayList<>();
     private String mp3Pattern = ".mp3";
     private Activity activity;
     public static final int RUNTIME_PERMISSION_CODE = 10000;
 
     // Constructor
-    public SongsManager(Activity activity) {
+    public SongsManager(Activity activity, String dir) {
         this.activity = activity;
-        Log.d("222222222",MEDIA_PATH);
+        MEDIA_PATH += "/" + dir;
+        Log.d("222222222", MEDIA_PATH);
         AndroidRuntimePermission();
     }
 

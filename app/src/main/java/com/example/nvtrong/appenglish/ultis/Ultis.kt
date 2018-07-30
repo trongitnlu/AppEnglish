@@ -16,7 +16,7 @@ object Ultis {
         val hour = durationInMillis / (1000 * 60 * 60) % 24
 
         val time = String.format("%02d:%02d:%02d.%d", hour, minute, second, millis)
-        return "Time: $time"
+        return "Time: $time - $durationInMillis"
     }
 
     fun getDir(context: Context): String {

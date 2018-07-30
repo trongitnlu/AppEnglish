@@ -61,6 +61,9 @@ class TwoFragment : Fragment() {
     private fun setupListView() {
         var from = arrayOf(KEY_TITLE, KEY_TIME)
         var to = intArrayOf(R.id.title, R.id.shortcut)
+        arrayList.sortBy {
+            it[KEY_TITLE]
+        }
         simpleAdapter = SongTwoAdapter(context, arrayList, R.layout.item_fragment_two, from, to)
         simpleAdapter.addListener(listener)
         listSeek.adapter = simpleAdapter

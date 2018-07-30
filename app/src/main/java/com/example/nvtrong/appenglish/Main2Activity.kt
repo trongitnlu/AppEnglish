@@ -19,7 +19,6 @@ import com.example.nvtrong.appenglish.tab.TwoFragment
 import com.example.nvtrong.appenglish.tab.ViewPagerAdapter
 import com.example.nvtrong.appenglish.ultis.Ultis.KEY_TITLE
 import io.realm.Realm
-import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main2.*
 import java.io.IOException
 
@@ -36,6 +35,7 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     lateinit var twoFragment: TwoFragment
 
     lateinit var realm: Realm
+    var isPause = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
@@ -107,6 +107,9 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         btnPrevious.setOnClickListener {
             previous5S()
         }
+        btnPause.setOnClickListener {
+            pause()
+        }
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length!! > 0)
@@ -169,6 +172,21 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         }
     }
 
+    var durationInMillisPause = 0
+    private fun pause() {
+        if (!isPause) {
+            btnPause.text = "Resume"
+            mediaPlayer.pause()
+            isPause = true
+            durationInMillisPause = mediaPlayer.currentPosition
+        } else {
+            btnPause.text = "Pause"
+            mediaPlayer.start()
+            mediaPlayer.seekTo(durationInMillisPause)
+            isPause = false
+        }
+    }
+
     fun convertTime(durationInMillis: Int): String {
         val millis = durationInMillis % 1000
         val second = durationInMillis / 1000 % 60
@@ -176,7 +194,7 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         val hour = durationInMillis / (1000 * 60 * 60) % 24
 
         val time = String.format("%02d:%02d:%02d.%d", hour, minute, second, millis)
-        return "Time: $time"
+        return "Time: $time - $durationInMillis"
     }
 
     override fun onDestroy() {

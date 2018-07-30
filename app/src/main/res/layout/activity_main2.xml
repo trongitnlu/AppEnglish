@@ -57,8 +57,8 @@
                 android:id="@+id/btnPrevious"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="&lt;&lt;"
-                tools:ignore="HardcodedText" />
+                android:layout_weight="1"
+                android:text="&lt;&lt;" />
 
             <Button
                 android:id="@+id/btnStop"
@@ -68,6 +68,13 @@
                 android:text="Stop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+            <Button
+                android:id="@+id/btnPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pause" />
 
             <Button
                 android:id="@+id/btnSeek"
@@ -111,12 +118,12 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:inputType="textAutoComplete"
                     android:id="@+id/nameSession"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:hint="Name session"
+                    android:inputType="textAutoComplete"
                     android:text="No name" />
 
                 <EditText
