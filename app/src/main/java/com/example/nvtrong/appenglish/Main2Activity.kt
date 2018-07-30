@@ -223,7 +223,7 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     }
 
     private fun addSongToRealm(title: String, timeLog: Int) {
-        var resultsSong = realm.where(Song::class.java).contains(KEY_TITLE, title).findAll()
+        var resultsSong = realm.where(Song::class.java).contains("pathDir", this.song).contains(KEY_TITLE, title).findAll()
         if (resultsSong.size > 0) {
             Toast.makeText(this, "Failed, The title was be available!", Toast.LENGTH_SHORT).show()
         } else {
