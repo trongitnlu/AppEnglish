@@ -39,12 +39,12 @@ class TwoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realm = MyApplication.realm
-        arrayList = getListSong()
+        arrayList = getListSong(arguments!!.getString("pathDir"))
     }
 
-    private fun getListSong(): ArrayList<HashMap<String, String>> {
+    private fun getListSong(pathDir: String): ArrayList<HashMap<String, String>> {
         var arrayList = ArrayList<HashMap<String, String>>()
-        var resultsSong = realm.where(Song::class.java).findAll()
+        var resultsSong = realm.where(Song::class.java).contains("pathDir", pathDir).findAll()
         resultsSong.forEach {
             var hashMap = HashMap<String, String>()
 
@@ -79,8 +79,8 @@ class TwoFragment : Fragment() {
         this.listener = listener
     }
 
-    fun notifyDataChanged() {
-        arrayList = getListSong()
+    fun notifyDataChanged(pathDir: String) {
+        arrayList = getListSong(pathDir)
         setupListView()
     }
 }

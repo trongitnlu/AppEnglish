@@ -168,7 +168,7 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     private fun setSession() {
         btnSet.setOnClickListener {
             addSongToRealm(nameSession.text.toString(), editText.text.toString().toInt())
-            twoFragment.notifyDataChanged()
+            twoFragment.notifyDataChanged(this.song)
         }
     }
 
@@ -214,6 +214,9 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         twoFragment = TwoFragment()
         oneFragment.addListener(this)
         twoFragment.addListener(this)
+        var bundlePath = Bundle()
+        bundlePath.putString("pathDir", this.song)
+        twoFragment.arguments = bundlePath
         adapter.addFragment(oneFragment, "ONE")
         adapter.addFragment(twoFragment, "TWO")
         viewpager.setAdapter(adapter);
@@ -229,12 +232,9 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
 
             song.title = title
             song.timeLong = timeLog
+            song.pathDir = this.song
             realm.commitTransaction()
 
-            var results = realm.where(Song::class.java).findAll()
-            results.forEach {
-                Log.d("333333333333333333", it.toString())
-            }
             Toast.makeText(this, "Add Success!", Toast.LENGTH_SHORT).show()
         }
     }
@@ -246,9 +246,9 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     }
 
     fun onChangeRealm() {
-        var favourites = realm.where(Song::class.java).findAll()
+        var favourites = realm.where(Song::class.java).contains("pathDir", this.song).findAll()
         favourites.addChangeListener { t, changeSet ->
-            twoFragment.notifyDataChanged()
+            twoFragment.notifyDataChanged(this.song)
         }
     }
 }

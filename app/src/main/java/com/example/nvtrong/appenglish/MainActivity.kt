@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.AdapterView
 import android.widget.SimpleAdapter
 import android.widget.Toast
@@ -84,5 +86,18 @@ class MainActivity : AppCompatActivity() {
                 init()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var id = item!!.itemId
+        when (id) {
+            R.id.item_setting -> performFileSearch()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
