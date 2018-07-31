@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
+import com.beardedhen.androidbootstrap.font.FontAwesome
 import com.example.nvtrong.appenglish.listener.OnClickItemListenerFragment
 import com.example.nvtrong.appenglish.model.Song
 import com.example.nvtrong.appenglish.tab.OneFragment
@@ -110,6 +111,8 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         btnPause.setOnClickListener {
             pause()
         }
+        setSession()
+
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length!! > 0)
@@ -132,23 +135,25 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
         editText.setText(0.toString())
 
         setupTab()
-        setSession()
-
     }
 
-    fun stopMedia() {
+    private fun stopMedia() {
         if (isPlay) {
             mediaPlayer.stop()
             isPlay = false;
-            btnStop.text = "Start"
+//            btnStop.text = "Start"
+            btnStop.setFontAwesomeIcon(FontAwesome.FA_PLAY)
         } else {
             mediaPlayer = MediaPlayer()
             mediaPlayer.setDataSource(applicationContext, myUri)
             mediaPlayer.prepare()
             mediaPlayer.start()
             isPlay = true;
-            btnStop.text = "Stop"
+//            btnStop.text = "Stop"
+            btnStop.setFontAwesomeIcon(FontAwesome.FA_STOP)
         }
+        isPause = isPlay
+        pause()
 
     }
 
@@ -175,12 +180,14 @@ class Main2Activity : AppCompatActivity(), OnClickItemListenerFragment {
     var durationInMillisPause = 0
     private fun pause() {
         if (!isPause) {
-            btnPause.text = "Resume"
+//            btnPause.text = "Resume"
+            btnPause.setFontAwesomeIcon(FontAwesome.FA_CARET_SQUARE_O_RIGHT)
             mediaPlayer.pause()
             isPause = true
             durationInMillisPause = mediaPlayer.currentPosition
         } else {
-            btnPause.text = "Pause"
+            btnPause.setFontAwesomeIcon(FontAwesome.FA_PAUSE)
+//            btnPause.text = "Pause"
             mediaPlayer.start()
             mediaPlayer.seekTo(durationInMillisPause)
             isPause = false

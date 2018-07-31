@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Main2Activity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background1"
         android:orientation="vertical">
 
 
@@ -23,17 +25,20 @@
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.beardedhen.androidbootstrap.BootstrapLabel
                 android:id="@+id/timeCurrent"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/app_name"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
                 android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:bootstrapBrand="success"
+                app:bootstrapHeading="h2"
+                app:roundedCorners="false" />
 
-            <TextView
+            <com.beardedhen.androidbootstrap.BootstrapLabel
                 android:id="@+id/timeHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,53 +52,88 @@
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="8dp"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="0dp">
 
-            <Button
-                android:id="@+id/btnPrevious"
+            <com.beardedhen.androidbootstrap.BootstrapButtonGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="&lt;&lt;" />
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:text="BootstrapButtonGroup"
+                app:bootstrapBrand="warning"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="false"
+                app:showOutline="true">
 
-            <Button
-                android:id="@+id/btnStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Stop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnPrevious"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_angle_double_left"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
 
-            <Button
-                android:id="@+id/btnPause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Pause" />
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="success"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_stop"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
 
-            <Button
-                android:id="@+id/btnSeek"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btnStop"
-                android:layout_centerHorizontal="true"
-                android:layout_weight="1"
-                android:text="Seek"
-                app:layout_constraintStart_toEndOf="@+id/btnNext" />
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="success"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_pause"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
 
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/btnSeek"
-                android:layout_weight="1"
-                android:text="&gt;&gt;"
-                tools:ignore="HardcodedText" />
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnSeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bootstrapBrand="warning"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_bolt"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/btnSeek"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_angle_double_right"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
+            </com.beardedhen.androidbootstrap.BootstrapButtonGroup>
         </LinearLayout>
 
         <LinearLayout
@@ -117,33 +157,48 @@
                 android:layout_weight="5"
                 android:orientation="horizontal">
 
-                <EditText
+                <com.beardedhen.androidbootstrap.BootstrapEditText
                     android:id="@+id/nameSession"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_weight="2"
                     android:hint="Name session"
                     android:inputType="textAutoComplete"
-                    android:text="No name" />
+                    android:text="No name"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="md"
+                    app:roundedCorners="true" />
 
-                <EditText
+                <com.beardedhen.androidbootstrap.BootstrapEditText
                     android:id="@+id/editText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_weight="2"
                     android:hint="millis"
                     android:inputType="numberSigned"
                     android:maxLength="9"
                     android:text="0"
                     android:textAlignment="center"
+                    app:bootstrapBrand="info"
+                    app:bootstrapSize="md"
+                    app:roundedCorners="true"
                     tools:ignore="MissingConstraints" />
 
-                <Button
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
                     android:id="@+id/btnSet"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Set" />
+                    app:bootstrapBrand="primary"
+                    app:bootstrapSize="lg"
+                    app:buttonMode="regular"
+                    app:fontAwesomeIcon="fa_chevron_circle_down"
+                    app:roundedCorners="true"
+                    app:showOutline="true"
+                    app:typicon="ty_anchor_outline" />
             </LinearLayout>
 
             <TextView
@@ -165,6 +220,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/background2"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
